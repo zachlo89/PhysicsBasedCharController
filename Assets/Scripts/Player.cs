@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _jumpHeight = 15.0f;
     [SerializeField] private float _yVelocity; // var to cache y velocity to another var
 
+    private bool _canDoubleJump = false;
+
 
     void Start()
     {
@@ -39,13 +41,23 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _yVelocity = _jumpHeight; // set y velocity to 15
+                _canDoubleJump = true;
             }
         }
         else
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (_canDoubleJump == true)
+                {
+                    _yVelocity += _jumpHeight; // doubles jump height; dbl jump
+                    _canDoubleJump = false;
+                }
+            }
             // apply gravity
             _yVelocity -= _gravity;
         }
+
         // cached vel = 15; goes back up to line 25 calc next fr
         // cached val is 14 cuz subtracted 1 from gravity
         _velocity.y = _yVelocity; 
